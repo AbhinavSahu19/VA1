@@ -85,10 +85,7 @@ fun BlogSuccessDisplay(blog: BlogDC, modifier: Modifier) {
 
         BlogWebView(
             content = blog.content,
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 100.dp) // Set a minimum height for proper rendering
-                .padding(horizontal = 10.dp)
+            modifier = Modifier.fillMaxSize()
         )
     }
 }

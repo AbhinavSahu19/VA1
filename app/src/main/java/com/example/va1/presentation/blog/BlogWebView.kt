@@ -17,19 +17,14 @@ import com.example.va1.R
 @Composable
 fun BlogWebView(content: String, modifier: Modifier) {
     AndroidView(
-        factory = { context ->
-            TextView(context).apply {
-                text = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_LEGACY)
-                setTextColor(Color.BLACK)
-                textSize = 16f
-                setLinkTextColor(Color.BLUE)
-                movementMethod = LinkMovementMethod.getInstance()
-            }
-        },
-        modifier = modifier
-            .fillMaxSize()
-            .padding(10.dp, 2.dp, 10.dp, 5.dp)
+        modifier = modifier.padding(10.dp, 2.dp, 10.dp, 5.dp)
             .background(color = colorResource(id = R.color.white)),
+        factory = { context -> TextView(context).apply {
+            setTextColor(Color.BLACK)
+            textSize = 16f
+            setLinkTextColor(Color.BLUE)
+        } },
+        update = { it.text = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT) }
     )
 }
 
