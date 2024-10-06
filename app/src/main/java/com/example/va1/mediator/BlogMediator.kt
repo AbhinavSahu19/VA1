@@ -21,23 +21,23 @@ class BlogMediator @Inject constructor(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, BlogRDC>)
-    : MediatorResult {
+        state: PagingState<Int, BlogRDC>
+    ): MediatorResult {
         return try {
             val loadKey = when (loadType) {
-                LoadType.REFRESH -> 1
-                LoadType.PREPEND -> return MediatorResult.Success(
-                    endOfPaginationReached = true
-                )
+                LoadType.REFRESH -> null
+                LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.APPEND -> {
                     val lastItem = state.lastItemOrNull()
-                    lastItem?.let { (lastItem.id / state.config.pageSize) + 1 } ?: 1
+                    lastItem?.id?.let { (it / state.config.pageSize) + 1 }
+                        ?: return MediatorResult.Success(endOfPaginationReached = true)
                 }
             }
 
-
+            val page = loadKey ?: 1
             val blogs = apiService.getBlogs(
-                pageNumber = loadKey,
+                pageNumber = page,
+                perPage = state.config.pageSize
             )
 
             blogDB.withTransaction {
@@ -48,14 +48,10 @@ class BlogMediator @Inject constructor(
                 blogDB.dao.upsertAll(blogsDC)
             }
 
-
-            MediatorResult.Success(
-                endOfPaginationReached = blogs.isEmpty()
-            )
-        } catch(e: IOException) {
-            MediatorResult.Error(e)
-        } catch(e: HttpException) {
+            MediatorResult.Success(endOfPaginationReached = blogs.isEmpty())
+        } catch (e: Exception) {
             MediatorResult.Error(e)
         }
     }
+
 }

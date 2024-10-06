@@ -23,6 +23,7 @@ fun BlogWebView(content: String, modifier: Modifier) {
             setTextColor(Color.BLACK)
             textSize = 16f
             setLinkTextColor(Color.BLUE)
+            movementMethod = LinkMovementMethod.getInstance()
         } },
         update = { it.text = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT) }
     )

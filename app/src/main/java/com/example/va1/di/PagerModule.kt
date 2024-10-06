@@ -15,22 +15,22 @@ import javax.inject.Singleton
 
 
 //Not in use, TO DELETE
-@OptIn(ExperimentalPagingApi::class)
-@Module
-@InstallIn(SingletonComponent::class)
-object PagerModule {
-    @Provides
-    @Singleton
-    fun provideBeerPager(roomDatabase: BlogDatabase, apiService: ApiService): Pager<Int, BlogRDC> {
-        return Pager(
-            config = PagingConfig(pageSize = 1),
-            remoteMediator = BlogMediator(
-                apiService,
-                roomDatabase
-            ),
-            pagingSourceFactory = {
-                roomDatabase.dao.getAll()
-            }
-        )
-    }
-}
+//@OptIn(ExperimentalPagingApi::class)
+//@Module
+//@InstallIn(SingletonComponent::class)
+//object PagerModule {
+//    @Provides
+//    @Singleton
+//    fun provideBlogPager(roomDatabase: BlogDatabase, apiService: ApiService): Pager<Int, BlogRDC> {
+//        return Pager(
+//            config = PagingConfig(pageSize = 1),
+//            remoteMediator = BlogMediator(
+//                apiService,
+//                roomDatabase
+//            ),
+//            pagingSourceFactory = {
+//                roomDatabase.dao.getAll()
+//            }
+//        )
+//    }
+//}
